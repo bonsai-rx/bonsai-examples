@@ -9,14 +9,6 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Repeat" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Delay">
-          <DueTime>PT0.1S</DueTime>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:Smooth">
           <q1:SmoothType>Gaussian</q1:SmoothType>
           <q1:Size1>23</q1:Size1>
@@ -60,59 +52,90 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:EqualizeHistogram" />
       </Expression>
+      <Expression xsi:type="Replay">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Repeat" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Delay">
+                <DueTime>PT0.01S</DueTime>
+              </Combinator>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
+        <BufferSize xsi:nil="true" />
+      </Expression>
     </Nodes>
     <Edges>
       <Edge>
         <From>0</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
         <To>7</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>6</From>
-        <To>8</To>
+        <From>4</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>4</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
     <Type>Bonsai.Vision.LoadImage, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Canny, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.MorphologicalOperator, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.EqualizeHistogram, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
