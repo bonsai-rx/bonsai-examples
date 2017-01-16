@@ -10,7 +10,7 @@
     <projectUrl>https://bitbucket.org/horizongir/bonsai.examples</projectUrl>
     <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>An example of image processing operators in Bonsai.</description>
+    <description>A time lapse video acquisition example using Bonsai.</description>
     <copyright>Gonçalo Lopes © 2017</copyright>
     <tags>Time Lapse Example Bonsai Gallery</tags>
     <dependencies>
