@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bonsai.Examples.VoicePaint</id>
+    <version>1.0.0</version>
+    <title>Bonsai - Voice Paint Example</title>
+    <authors>glopes</authors>
+    <owners>glopes</owners>
+    <licenseUrl>https://bitbucket.org/horizongir/bonsai.examples/raw/14485711394f63a0dec3b36479c2cc4ea680addd/LICENSE</licenseUrl>
+    <projectUrl>https://bitbucket.org/horizongir/bonsai.examples</projectUrl>
+    <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An interactive application example where a canvas is painted using a brush controlled by the pitch of the input audio stream.</description>
+    <copyright>Gonçalo Lopes © 2017</copyright>
+    <tags>Voice Paint Example Bonsai Gallery</tags>
+    <dependencies>
+      <dependency id="Bonsai.Core" version="2.3.0" />
+      <dependency id="Bonsai.Vision" version="2.3.0" />
+      <dependency id="Bonsai.Vision.Design" version="2.3.0" />
+    </dependencies>
+  </metadata>
+</package>
