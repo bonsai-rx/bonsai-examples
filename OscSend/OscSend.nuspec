@@ -12,11 +12,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A remote OSC sender example using Bonsai.</description>
     <copyright>Gonçalo Lopes © 2017</copyright>
-    <tags>Osc Send Example Bonsai Gallery</tags>
+    <tags>Osc Send Message Example Bonsai Gallery</tags>
     <dependencies>
       <dependency id="Bonsai.Core" version="2.3.0" />
       <dependency id="Bonsai.Windows.Input" version="2.2.0" />
       <dependency id="Bonsai.Osc" version="2.3.0" />
+      <dependency id="Bonsai.Design.Visualizers" version="2.3.0" />
     </dependencies>
   </metadata>
 </package>
