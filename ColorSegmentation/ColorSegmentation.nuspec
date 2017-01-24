@@ -16,6 +16,7 @@
     <dependencies>
       <dependency id="Bonsai.Core" version="2.3.0" />
       <dependency id="Bonsai.Vision" version="2.3.0" />
+      <dependency id="Bonsai.Scripting" version="2.3.0" />
       <dependency id="Bonsai.Vision.Design" version="2.3.0" />
     </dependencies>
   </metadata>
