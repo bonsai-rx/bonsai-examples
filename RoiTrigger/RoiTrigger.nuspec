@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An example of triggering a sound effect on motion detected within a certain region of a video stream.</description>
     <copyright>Gonçalo Lopes © 2017</copyright>
-    <tags>ROI Trigger Example Bonsai Gallery</tags>
+    <tags>ROI Trigger Vision Example Bonsai Gallery</tags>
     <dependencies>
       <dependency id="Bonsai.Core" version="2.3.0" />
       <dependency id="Bonsai.Vision" version="2.3.0" />
