@@ -12,7 +12,7 @@
           <q1:Usage>DynamicDraw</q1:Usage>
           <q1:VertexAttributes>
             <q1:VertexAttributeMapping>
-              <q1:Size>2</q1:Size>
+              <q1:Size>3</q1:Size>
               <q1:Normalized>false</q1:Normalized>
               <q1:Type>Float</q1:Type>
             </q1:VertexAttributeMapping>
@@ -22,7 +22,7 @@
       <Expression xsi:type="q2:PythonTransform">
         <q2:Script>import clr
 clr.AddReference("OpenTK")
-from OpenTK import Vector2
+from OpenTK import Vector2, Vector3
 from System import Array, Single, Random
 
 # Simulation parameters
@@ -39,6 +39,8 @@ minvelX = -0.2
 maxvelX = 0.2
 minvelY = 0.5
 maxvelY = 1.0
+minSize = 5.0
+maxSize = 15.0
 mass = 1.0
 
 # Particle behavior definition class
@@ -48,13 +50,15 @@ class Particle:
     self.vel = Vector2.Zero
     self.accel = Vector2.Zero
     self.mass = 0.0
+    self.size = 0.0
     self.active = False
 
-  def activate(self,pos,vel,mass):
+  def activate(self,pos,vel,mass,size):
     self.pos = pos
     self.vel = vel
     self.accel = Vector2.Zero
     self.mass = Single(mass)
+    self.size = Single(size)
     self.active = True
 
   def addforce(self,force):
@@ -77,7 +81,7 @@ def load():
     particles.append(particle)
 
 # Simulation step
-@returns(Array[Vector2])
+@returns(Array[Vector3])
 def process(value):
   spawncount = birthrate
   for p in particles:
@@ -89,10 +93,11 @@ def process(value):
     elif spawncount &gt; 0:
       vx = random(generator,minvelX,maxvelX)
       vy = random(generator,minvelY,maxvelY)
-      p.activate(source,Vector2(vx,vy),mass)
+      size = random(generator,minSize,maxSize)
+      p.activate(source,Vector2(vx,vy),mass,size)
       spawncount -= 1
 
-  return Array[Vector2]([p.pos for p in particles if p.active])</q2:Script>
+  return Array[Vector3]([Vector3(p.pos.X,p.pos.Y,p.size) for p in particles if p.active])</q2:Script>
       </Expression>
     </Nodes>
     <Edges>
