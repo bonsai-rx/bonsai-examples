@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:UpdateFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:DrawArrays">
+          <q1:MaterialName>Particles</q1:MaterialName>
+          <q1:DrawMode>Points</q1:DrawMode>
+          <q1:Usage>DynamicDraw</q1:Usage>
+          <q1:VertexAttributes>
+            <q1:VertexAttributeMapping>
+              <q1:Size>2</q1:Size>
+              <q1:Normalized>false</q1:Normalized>
+              <q1:Type>Float</q1:Type>
+            </q1:VertexAttributeMapping>
+          </q1:VertexAttributes>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Script>import clr
+clr.AddReference("OpenTK")
+from OpenTK import Vector2
+from System import Array, Single, Random
+
+# Simulation parameters
+n = 1000
+dt = Single(1.0 / 60.0)
+gravity = Vector2(0, -1)
+particles = None
+
+# Particle generation parameters
+birthrate = 5
+generator = Random()
+source = Vector2(0, 0.25)
+minvelX = -0.2
+maxvelX = 0.2
+minvelY = 0.5
+maxvelY = 1.0
+mass = 1.0
+
+# Particle behavior definition class
+class Particle:
+  def __init__(self):
+    self.pos = Vector2.Zero
+    self.vel = Vector2.Zero
+    self.accel = Vector2.Zero
+    self.mass = 0.0
+    self.active = False
+
+  def activate(self,pos,vel,mass):
+    self.pos = pos
+    self.vel = vel
+    self.accel = Vector2.Zero
+    self.mass = Single(mass)
+    self.active = True
+
+  def addforce(self,force):
+    self.accel += force / self.mass
+
+  def update(self,dt):
+    self.pos += dt * self.vel
+    self.vel += dt * self.accel
+    self.accel = Vector2.Zero
+
+def random(generator,minval,maxval):
+  return generator.NextDouble() * (maxval - minval) + minval
+
+# Initialization
+def load():
+  global particles
+  particles = []
+  for i in range(n):
+    particle = Particle()
+    particles.append(particle)
+
+# Simulation step
+@returns(Array[Vector2])
+def process(value):
+  spawncount = birthrate
+  for p in particles:
+    if p.active:
+      p.addforce(gravity)
+      p.update(dt)
+      if p.pos.Y &lt; -1:
+        p.active = False
+    elif spawncount &gt; 0:
+      vx = random(generator,minvelX,maxvelX)
+      vy = random(generator,minvelY,maxvelY)
+      p.activate(source,Vector2(vx,vy),mass)
+      spawncount -= 1
+
+  return Array[Vector2]([p.pos for p in particles if p.active])</q2:Script>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
