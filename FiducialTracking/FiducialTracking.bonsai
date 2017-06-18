@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Aruco;assembly=Bonsai.Aruco" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:CameraCapture">
+          <q1:Index>0</q1:Index>
+          <q1:CaptureProperties />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DetectMarkers">
+          <q2:CameraParameters>CameraCalibration.yml</q2:CameraParameters>
+          <q2:ThresholdMethod>AdaptiveThreshold</q2:ThresholdMethod>
+          <q2:Param1>7</q2:Param1>
+          <q2:Param2>7</q2:Param2>
+          <q2:MinSize>0.04</q2:MinSize>
+          <q2:MaxSize>0.5</q2:MaxSize>
+          <q2:CornerRefinement>Lines</q2:CornerRefinement>
+          <q2:MarkerSize>10</q2:MarkerSize>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:SelectMarker">
+          <q2:Id>345</q2:Id>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MarkerViewMatrix" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:RenderFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:CreatePerspectiveFieldOfView">
+          <q3:FovY>1.04719758</q3:FovY>
+          <q3:AspectRatio>1.33333337</q3:AspectRatio>
+          <q3:NearClip>1</q3:NearClip>
+          <q3:FarClip>10000</q3:FarClip>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:UpdateUniform">
+          <q3:UniformName>projection</q3:UniformName>
+          <q3:ShaderName>PerPixelLight</q3:ShaderName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:UpdateTexture">
+          <q3:TextureName>Camera</q3:TextureName>
+          <q3:InternalFormat>Rgba</q3:InternalFormat>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:CreateTransform">
+          <q3:Position>
+            <q3:X>0</q3:X>
+            <q3:Y>10</q3:Y>
+            <q3:Z>0</q3:Z>
+          </q3:Position>
+          <q3:Rotation>
+            <q3:Xyz>
+              <q3:X>0</q3:X>
+              <q3:Y>0</q3:Y>
+              <q3:Z>0</q3:Z>
+            </q3:Xyz>
+            <q3:W>1</q3:W>
+          </q3:Rotation>
+          <q3:Scale>
+            <q3:X>10</q3:X>
+            <q3:Y>10</q3:Y>
+            <q3:Z>10</q3:Z>
+          </q3:Scale>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Multiply" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:UpdateUniform">
+          <q3:UniformName>modelview</q3:UniformName>
+          <q3:ShaderName>PerPixelLight</q3:ShaderName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:DrawMesh">
+          <q3:ShaderName>PerPixelLight</q3:ShaderName>
+          <q3:MeshName>Suzanne</q3:MeshName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q3:DrawMesh">
+          <q3:ShaderName>Camera</q3:ShaderName>
+          <q3:MeshName>Quad</q3:MeshName>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>9</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>2</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>8</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>6</From>
+        <To>12</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>8</From>
+        <To>10</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>9</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>10</From>
+        <To>11</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Aruco.DetectMarkers, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Aruco.SelectMarker, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Aruco.MarkerViewMatrix, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.RenderFrame, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.CreatePerspectiveFieldOfView, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.UpdateTexture, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.CreateTransform, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.DrawMesh, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>

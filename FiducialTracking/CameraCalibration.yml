@@ -1,0 +1,32 @@
+%YAML:1.0
+calibration_time: "18/06/17 12:00:00"
+image_width: 640
+image_height: 480
+
+camera_matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 400, 0., 320,
+           0., 400, 240,
+           0., 0., 1. ]
+# e.g. for a camera with square pixels:
+#  data: [Fx,  0, Px,
+#          0, Fy, Py,
+#          0,  0,  1]
+#  Fx = Fy = dz * (image_height / dy)
+#  Px = image_width / 2
+#  Py = image_height / 2
+# The physical quantities dz and dy can be obtained by placing
+# a calibration board at a distance from the camera such that
+# the board completely fills the image height. Then we have:
+#  dz = distance to calibration board
+#  dy = height of calibration board
+
+distortion_coefficients: !!opencv-matrix
+   rows: 5
+   cols: 1
+   dt: d
+   data: [ 0, 0, 0, 0, 0 ]
+# The first three parameters specify radial distortion, and
+# the final two parameters indicate tangential distortion.
