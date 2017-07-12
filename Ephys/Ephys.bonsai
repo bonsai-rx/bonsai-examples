@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.3.0">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+    <Nodes>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:Rhd2000EvalBoard">
+          <q1:BitFileName>rhd2000_usb3.bit</q1:BitFileName>
+          <q1:SampleRate>SampleRate30000Hz</q1:SampleRate>
+          <q1:FastSettle>false</q1:FastSettle>
+          <q1:LowerBandwidth>0.1</q1:LowerBandwidth>
+          <q1:UpperBandwidth>7500</q1:UpperBandwidth>
+          <q1:DspCutoffFrequency>1</q1:DspCutoffFrequency>
+          <q1:DspEnabled>true</q1:DspEnabled>
+          <q1:CableDelayA xsi:nil="true" />
+          <q1:CableDelayB xsi:nil="true" />
+          <q1:CableDelayC xsi:nil="true" />
+          <q1:CableDelayD xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.AmplifierData</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.BufferCapacity</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:AdcScale">
+          <q1:AdcType>Electrode</q1:AdcType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:SelectChannels">
+          <q2:Channels>
+            <q2:int>1</q2:int>
+            <q2:int>2</q2:int>
+          </q2:Channels>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:FrequencyFilter">
+          <q2:SamplingFrequency>30000</q2:SamplingFrequency>
+          <q2:Cutoff1>300</q2:Cutoff1>
+          <q2:Cutoff2>0</q2:Cutoff2>
+          <q2:KernelLength>60</q2:KernelLength>
+          <q2:FilterType>HighPass</q2:FilterType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:DetectSpikes">
+          <q2:Delay>20</q2:Delay>
+          <q2:Length>60</q2:Length>
+          <q2:Threshold>
+            <q2:double>-100</q2:double>
+          </q2:Threshold>
+          <q2:WaveformRefinement>AlignPeaks</q2:WaveformRefinement>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:MatrixWriter">
+          <q2:Suffix>None</q2:Suffix>
+          <q2:Overwrite>false</q2:Overwrite>
+          <q2:Layout>ColumnMajor</q2:Layout>
+        </Combinator>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge>
+        <From>0</From>
+        <To>1</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>0</From>
+        <To>2</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>1</From>
+        <To>7</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>3</From>
+        <To>4</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>4</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>5</From>
+        <To>6</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+    </Edges>
+  </Workflow>
+  <ExtensionTypes>
+    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+  </ExtensionTypes>
+</WorkflowBuilder>
