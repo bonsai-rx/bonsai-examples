@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<VisualizerLayout xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<VisualizerLayout xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 >
   <DialogSettings>
     <Visible>false</Visible>
     <Location>
@@ -27,11 +29,23 @@
   <DialogSettings>
     <Visible>false</Visible>
     <Location>
-      <X>220</X>
-      <Y>229</Y>
+      <X>0</X>
+      <Y>0</Y>
     </Location>
     <Size>
-      <Width>333</Width>
+      <Width>0</Width>
+      <Height>0</Height>
+    </Size>
+    <WindowState>Normal</WindowState>
+  </DialogSettings>
+  <DialogSettings>
+    <Visible>false</Visible>
+    <Location>
+      <X>147</X>
+      <Y>153</Y>
+    </Location>
+    <Size>
+      <Width>413</Width>
       <Height>277</Height>
     </Size>
     <WindowState>Normal</WindowState>

@@ -1,181 +1,268 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Aruco;assembly=Bonsai.Aruco" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:q1="clr-namespace:Bonsai.Aruco;assembly=Bonsai.Aruco"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:CameraCapture">
-          <q1:Index>0</q1:Index>
-          <q1:CaptureProperties />
+        <Combinator xsi:type="gl:CreateWindow">
+          <gl:Width>640</gl:Width>
+          <gl:Height>480</gl:Height>
+          <gl:VSync>On</gl:VSync>
+          <gl:SwapSync>false</gl:SwapSync>
+          <gl:ClearColor>Black</gl:ClearColor>
+          <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
+          <gl:CursorVisible>true</gl:CursorVisible>
+          <gl:Location xsi:nil="true" />
+          <gl:WindowBorder>Resizable</gl:WindowBorder>
+          <gl:WindowState>Normal</gl:WindowState>
+          <gl:DisplayDevice>Primary</gl:DisplayDevice>
+          <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:RenderState>
+            <gl:StateConfiguration xsi:type="gl:DepthFunctionState">
+              <gl:Function>Less</gl:Function>
+            </gl:StateConfiguration>
+          </gl:RenderState>
+          <gl:GraphicsMode>
+            <gl:ColorFormat>
+              <gl:Red>8</gl:Red>
+              <gl:Green>8</gl:Green>
+              <gl:Blue>8</gl:Blue>
+              <gl:Alpha>8</gl:Alpha>
+            </gl:ColorFormat>
+            <gl:Depth>16</gl:Depth>
+            <gl:Stencil>0</gl:Stencil>
+            <gl:Samples>0</gl:Samples>
+            <gl:AccumulatorFormat>
+              <gl:Red>0</gl:Red>
+              <gl:Green>0</gl:Green>
+              <gl:Blue>0</gl:Blue>
+              <gl:Alpha>0</gl:Alpha>
+            </gl:AccumulatorFormat>
+            <gl:Buffers>2</gl:Buffers>
+            <gl:Stereo>false</gl:Stereo>
+          </gl:GraphicsMode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:DetectMarkers">
-          <q2:CameraParameters>CameraCalibration.yml</q2:CameraParameters>
-          <q2:ThresholdMethod>AdaptiveThreshold</q2:ThresholdMethod>
-          <q2:Param1>7</q2:Param1>
-          <q2:Param2>7</q2:Param2>
-          <q2:MinSize>0.04</q2:MinSize>
-          <q2:MaxSize>0.5</q2:MaxSize>
-          <q2:CornerRefinement>Lines</q2:CornerRefinement>
-          <q2:MarkerSize>10</q2:MarkerSize>
+        <Combinator xsi:type="gl:MeshResources">
+          <gl:Meshes>
+            <gl:MeshConfiguration xsi:type="gl:TexturedQuad">
+              <gl:Name>Quad</gl:Name>
+              <gl:QuadEffects>FlipVertically</gl:QuadEffects>
+            </gl:MeshConfiguration>
+            <gl:MeshConfiguration xsi:type="gl:TexturedModel">
+              <gl:Name>Suzanne</gl:Name>
+              <gl:FileName>Models\Suzanne.obj</gl:FileName>
+            </gl:MeshConfiguration>
+          </gl:Meshes>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:SelectMarker">
-          <q2:Id>345</q2:Id>
+        <Combinator xsi:type="gl:TextureResources">
+          <gl:Textures>
+            <gl:TextureConfiguration xsi:type="gl:Texture2D">
+              <gl:Name>Camera</gl:Name>
+              <gl:Width xsi:nil="true" />
+              <gl:Height xsi:nil="true" />
+              <gl:InternalFormat>Rgba</gl:InternalFormat>
+              <gl:WrapS>Repeat</gl:WrapS>
+              <gl:WrapT>Repeat</gl:WrapT>
+              <gl:MinFilter>Linear</gl:MinFilter>
+              <gl:MagFilter>Linear</gl:MagFilter>
+            </gl:TextureConfiguration>
+          </gl:Textures>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MarkerViewMatrix" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:RenderFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:CreatePerspectiveFieldOfView">
-          <q3:FovY>1.04719758</q3:FovY>
-          <q3:AspectRatio>1.33333337</q3:AspectRatio>
-          <q3:NearClip>1</q3:NearClip>
-          <q3:FarClip>10000</q3:FarClip>
+        <Combinator xsi:type="gl:ShaderResources">
+          <gl:Shaders>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>Camera</gl:Name>
+              <gl:RenderState>
+                <gl:StateConfiguration xsi:type="gl:DisableState">
+                  <gl:Capability>DepthTest</gl:Capability>
+                </gl:StateConfiguration>
+              </gl:RenderState>
+              <gl:ShaderUniforms />
+              <gl:BufferBindings>
+                <gl:BufferBinding xsi:type="gl:TextureBinding">
+                  <gl:Name>tex</gl:Name>
+                  <gl:TextureSlot>Texture0</gl:TextureSlot>
+                  <gl:TextureName>Camera</gl:TextureName>
+                  <gl:TextureTarget>Texture2D</gl:TextureTarget>
+                </gl:BufferBinding>
+              </gl:BufferBindings>
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>Shaders\Quad.vert</gl:VertexShader>
+              <gl:FragmentShader>Shaders\Texture.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>PerPixelLight</gl:Name>
+              <gl:RenderState>
+                <gl:StateConfiguration xsi:type="gl:EnableState">
+                  <gl:Capability>DepthTest</gl:Capability>
+                </gl:StateConfiguration>
+              </gl:RenderState>
+              <gl:ShaderUniforms>
+                <gl:UniformConfiguration xsi:type="gl:Vec3Uniform">
+                  <gl:Name>Ka</gl:Name>
+                  <gl:Value>
+                    <gl:X>0.1</gl:X>
+                    <gl:Y>0.1</gl:Y>
+                    <gl:Z>0.1</gl:Z>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+                <gl:UniformConfiguration xsi:type="gl:Vec3Uniform">
+                  <gl:Name>Kd</gl:Name>
+                  <gl:Value>
+                    <gl:X>0.8</gl:X>
+                    <gl:Y>0.8</gl:Y>
+                    <gl:Z>0.8</gl:Z>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+                <gl:UniformConfiguration xsi:type="gl:Vec3Uniform">
+                  <gl:Name>Ks</gl:Name>
+                  <gl:Value>
+                    <gl:X>0.8</gl:X>
+                    <gl:Y>0.8</gl:Y>
+                    <gl:Z>0.8</gl:Z>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+                <gl:UniformConfiguration xsi:type="gl:FloatUniform">
+                  <gl:Name>Ns</gl:Name>
+                  <gl:Value>100</gl:Value>
+                </gl:UniformConfiguration>
+              </gl:ShaderUniforms>
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>Shaders\Model.vert</gl:VertexShader>
+              <gl:FragmentShader>Shaders\Phong.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+          </gl:Shaders>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:UpdateUniform">
-          <q3:UniformName>projection</q3:UniformName>
-          <q3:ShaderName>PerPixelLight</q3:ShaderName>
+        <Combinator xsi:type="res:LoadResources" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:CameraCapture">
+          <cv:Index>0</cv:Index>
+          <cv:CaptureProperties />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:UpdateTexture">
-          <q3:TextureName>Camera</q3:TextureName>
-          <q3:InternalFormat>Rgba</q3:InternalFormat>
+        <Combinator xsi:type="gl:UpdateTexture">
+          <gl:TextureName>Camera</gl:TextureName>
+          <gl:TextureTarget>Texture2D</gl:TextureTarget>
+          <gl:InternalFormat>Rgba</gl:InternalFormat>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
+        <Combinator xsi:type="q1:DetectMarkers">
+          <q1:CameraParameters>CameraCalibration.yml</q1:CameraParameters>
+          <q1:ThresholdMethod>AdaptiveThreshold</q1:ThresholdMethod>
+          <q1:Param1>7</q1:Param1>
+          <q1:Param2>7</q1:Param2>
+          <q1:MinSize>0.04</q1:MinSize>
+          <q1:MaxSize>0.5</q1:MaxSize>
+          <q1:CornerRefinement>Lines</q1:CornerRefinement>
+          <q1:MarkerSize>10</q1:MarkerSize>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:CreateTransform">
-          <q3:Position>
-            <q3:X>0</q3:X>
-            <q3:Y>10</q3:Y>
-            <q3:Z>0</q3:Z>
-          </q3:Position>
-          <q3:Rotation>
-            <q3:Xyz>
-              <q3:X>0</q3:X>
-              <q3:Y>0</q3:Y>
-              <q3:Z>0</q3:Z>
-            </q3:Xyz>
-            <q3:W>1</q3:W>
-          </q3:Rotation>
-          <q3:Scale>
-            <q3:X>10</q3:X>
-            <q3:Y>10</q3:Y>
-            <q3:Z>10</q3:Z>
-          </q3:Scale>
+        <Combinator xsi:type="q1:SelectMarker">
+          <q1:Id>345</q1:Id>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:CreateTransform">
+          <gl:Position>
+            <gl:X>0</gl:X>
+            <gl:Y>10</gl:Y>
+            <gl:Z>0</gl:Z>
+          </gl:Position>
+          <gl:Rotation>
+            <gl:Xyz>
+              <gl:X>0</gl:X>
+              <gl:Y>0</gl:Y>
+              <gl:Z>0</gl:Z>
+            </gl:Xyz>
+            <gl:W>1</gl:W>
+          </gl:Rotation>
+          <gl:Scale>
+            <gl:X>10</gl:X>
+            <gl:Y>10</gl:Y>
+            <gl:Z>10</gl:Z>
+          </gl:Scale>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q1:MarkerViewMatrix" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
       </Expression>
       <Expression xsi:type="Multiply" />
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:UpdateUniform">
-          <q3:UniformName>modelview</q3:UniformName>
-          <q3:ShaderName>PerPixelLight</q3:ShaderName>
+        <Combinator xsi:type="gl:UpdateUniform">
+          <gl:UniformName>modelview</gl:UniformName>
+          <gl:ShaderName>PerPixelLight</gl:ShaderName>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DrawMesh">
-          <q3:ShaderName>PerPixelLight</q3:ShaderName>
-          <q3:MeshName>Suzanne</q3:MeshName>
+        <Combinator xsi:type="gl:RenderFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:CreatePerspectiveFieldOfView">
+          <gl:FovY>1.04719758</gl:FovY>
+          <gl:AspectRatio>1.33333337</gl:AspectRatio>
+          <gl:NearClip>1</gl:NearClip>
+          <gl:FarClip>10000</gl:FarClip>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DrawMesh">
-          <q3:ShaderName>Camera</q3:ShaderName>
-          <q3:MeshName>Quad</q3:MeshName>
+        <Combinator xsi:type="gl:UpdateUniform">
+          <gl:UniformName>projection</gl:UniformName>
+          <gl:ShaderName>PerPixelLight</gl:ShaderName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:DrawMesh">
+          <gl:ShaderName>PerPixelLight</gl:ShaderName>
+          <gl:MeshName>Suzanne</gl:MeshName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:DrawMesh">
+          <gl:ShaderName>Camera</gl:ShaderName>
+          <gl:MeshName>Quad</gl:MeshName>
         </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>8</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="8" To="10" Label="Source1" />
+      <Edge From="9" To="11" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Vision.CameraCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Aruco.DetectMarkers, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Aruco.SelectMarker, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Aruco.MarkerViewMatrix, Bonsai.Aruco, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.RenderFrame, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.CreatePerspectiveFieldOfView, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateTexture, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.CreateTransform, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawMesh, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

@@ -1,25 +1,27 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bonsai.Examples.FiducialTracking</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>Bonsai - Fiducial Tracking Example</title>
     <authors>glopes</authors>
     <owners>glopes</owners>
-    <licenseUrl>https://bitbucket.org/horizongir/bonsai.examples/raw/14485711394f63a0dec3b36479c2cc4ea680addd/LICENSE</licenseUrl>
-    <projectUrl>https://bitbucket.org/horizongir/bonsai.examples</projectUrl>
-    <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
+    <licenseUrl>https://bonsai-rx.org/license</licenseUrl>
+    <projectUrl>https://github.com/bonsai-rx/bonsai-examples</projectUrl>
+    <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An example of 3D augmented reality using fiducial tracking in Bonsai.</description>
-    <copyright>Gonçalo Lopes © 2017</copyright>
+    <copyright>Gonçalo Lopes © 2019</copyright>
     <tags>Fiducial Tracking ArUco Example Bonsai Gallery</tags>
     <dependencies>
-      <dependency id="Bonsai.Core" version="2.3.0" />
-      <dependency id="Bonsai.Vision" version="2.3.0" />
+      <dependency id="Bonsai.Core" version="2.4.0" />
+      <dependency id="Bonsai.Vision" version="2.4.0" />
       <dependency id="Bonsai.Aruco" version="2.2.0" />
-      <dependency id="Bonsai.Shaders" version="0.18.0" />
-      <dependency id="Bonsai.Vision.Design" version="2.3.0" />
+      <dependency id="Bonsai.Shaders" version="0.19.0" />
+      <dependency id="Bonsai.Shaders.Design" version="0.19.0" />
+      <dependency id="Bonsai.Vision.Design" version="2.4.0" />
       <dependency id="Bonsai.Aruco.Design" version="2.2.0" />
+      <dependency id="Bonsai.System" version="2.4.0" />
     </dependencies>
   </metadata>
 </package>

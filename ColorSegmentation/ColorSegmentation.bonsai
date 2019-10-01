@@ -1,94 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FileCapture">
-          <q1:FileName>Axis.avi</q1:FileName>
-          <q1:PlaybackRate>0</q1:PlaybackRate>
-          <q1:StartPosition>0</q1:StartPosition>
-          <q1:PositionUnits>Frames</q1:PositionUnits>
-          <q1:Loop>true</q1:Loop>
-          <q1:Playing>true</q1:Playing>
+        <Combinator xsi:type="cv:FileCapture">
+          <cv:FileName>Axis.avi</cv:FileName>
+          <cv:PlaybackRate>0</cv:PlaybackRate>
+          <cv:StartPosition>0</cv:StartPosition>
+          <cv:PositionUnits>Frames</cv:PositionUnits>
+          <cv:Loop>true</cv:Loop>
+          <cv:Playing>true</cv:Playing>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:ConvertColor">
-          <q1:Conversion>Bgr2Hsv</q1:Conversion>
+        <Combinator xsi:type="cv:ConvertColor">
+          <cv:Conversion>Bgr2Hsv</cv:Conversion>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:HsvThreshold">
-          <q1:Lower>
-            <q1:Val0>150</q1:Val0>
-            <q1:Val1>160</q1:Val1>
-            <q1:Val2>45</q1:Val2>
-            <q1:Val3>0</q1:Val3>
-          </q1:Lower>
-          <q1:Upper>
-            <q1:Val0>179</q1:Val0>
-            <q1:Val1>255</q1:Val1>
-            <q1:Val2>255</q1:Val2>
-            <q1:Val3>255</q1:Val3>
-          </q1:Upper>
+        <Combinator xsi:type="cv:HsvThreshold">
+          <cv:Lower>
+            <cv:Val0>150</cv:Val0>
+            <cv:Val1>160</cv:Val1>
+            <cv:Val2>45</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:Lower>
+          <cv:Upper>
+            <cv:Val0>179</cv:Val0>
+            <cv:Val1>255</cv:Val1>
+            <cv:Val2>255</cv:Val2>
+            <cv:Val3>255</cv:Val3>
+          </cv:Upper>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:HsvThreshold">
-          <q1:Lower>
-            <q1:Val0>50</q1:Val0>
-            <q1:Val1>70</q1:Val1>
-            <q1:Val2>45</q1:Val2>
-            <q1:Val3>0</q1:Val3>
-          </q1:Lower>
-          <q1:Upper>
-            <q1:Val0>90</q1:Val0>
-            <q1:Val1>255</q1:Val1>
-            <q1:Val2>255</q1:Val2>
-            <q1:Val3>255</q1:Val3>
-          </q1:Upper>
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>External</cv:Mode>
+          <cv:Method>ChainApproxNone</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea>200</cv:MinArea>
+          <cv:MaxArea xsi:nil="true" />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FindContours">
-          <q1:Mode>External</q1:Mode>
-          <q1:Method>ChainApproxNone</q1:Method>
-          <q1:Offset>
-            <q1:X>0</q1:X>
-            <q1:Y>0</q1:Y>
-          </q1:Offset>
-          <q1:MinArea>200</q1:MinArea>
-          <q1:MaxArea xsi:nil="true" />
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:LargestBinaryRegion" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:HsvThreshold">
+          <cv:Lower>
+            <cv:Val0>50</cv:Val0>
+            <cv:Val1>70</cv:Val1>
+            <cv:Val2>45</cv:Val2>
+            <cv:Val3>0</cv:Val3>
+          </cv:Lower>
+          <cv:Upper>
+            <cv:Val0>90</cv:Val0>
+            <cv:Val1>255</cv:Val1>
+            <cv:Val2>255</cv:Val2>
+            <cv:Val3>255</cv:Val3>
+          </cv:Upper>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:FindContours">
-          <q1:Mode>External</q1:Mode>
-          <q1:Method>ChainApproxNone</q1:Method>
-          <q1:Offset>
-            <q1:X>0</q1:X>
-            <q1:Y>0</q1:Y>
-          </q1:Offset>
-          <q1:MinArea>200</q1:MinArea>
-          <q1:MaxArea xsi:nil="true" />
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>External</cv:Mode>
+          <cv:Method>ChainApproxNone</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea>200</cv:MinArea>
+          <cv:MaxArea xsi:nil="true" />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:BinaryRegionAnalysis" />
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:LargestBinaryRegion" />
+        <Combinator xsi:type="cv:LargestBinaryRegion" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:LargestBinaryRegion" />
+        <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="q2:PythonTransform">
-        <q2:Name>DrawCentroid</q2:Name>
-        <q2:Description>A Python script used to overlay the tracking results on top of the camera image.</q2:Description>
-        <q2:Script>import clr
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>DrawCentroid</scr:Name>
+        <scr:Description>A Python script used to overlay the tracking results on top of the camera image.</scr:Description>
+        <scr:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 
@@ -106,88 +114,23 @@ def process(value):
   if green.Area &gt; 0:
     CV.Circle(output, Point(green.Centroid), 10, Scalar.Rgb(0, 255, 0), -1)
 
-  return output</q2:Script>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
+  return output</scr:Script>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>11</To>
-        <Label>Source3</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>11</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="0" To="10" Label="Source3" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="6" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="10" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source2" />
+      <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.ConvertColor, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.HsvThreshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

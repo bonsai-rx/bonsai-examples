@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:LoadImage">
-          <q1:FileName>Lenna.png</q1:FileName>
-          <q1:Mode>Unchanged</q1:Mode>
+        <Combinator xsi:type="cv:LoadImage">
+          <cv:FileName>Lenna.png</cv:FileName>
+          <cv:Mode>Unchanged</cv:Mode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Replay">
@@ -14,128 +18,77 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Delay">
-                <DueTime>PT0.01S</DueTime>
+              <Combinator xsi:type="rx:Delay">
+                <rx:DueTime>PT0.01S</rx:DueTime>
               </Combinator>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
         <BufferSize xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Smooth">
-          <q1:SmoothType>Gaussian</q1:SmoothType>
-          <q1:Size1>23</q1:Size1>
-          <q1:Size2>0</q1:Size2>
-          <q1:Sigma1>0</q1:Sigma1>
-          <q1:Sigma2>0</q1:Sigma2>
+        <Combinator xsi:type="cv:Smooth">
+          <cv:SmoothType>Gaussian</cv:SmoothType>
+          <cv:Size1>23</cv:Size1>
+          <cv:Size2>0</cv:Size2>
+          <cv:Sigma1>0</cv:Sigma1>
+          <cv:Sigma2>0</cv:Sigma2>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Canny">
-          <q1:Threshold1>50</q1:Threshold1>
-          <q1:Threshold2>300</q1:Threshold2>
-          <q1:ApertureSize>3</q1:ApertureSize>
+        <Combinator xsi:type="cv:Canny">
+          <cv:Threshold1>50</cv:Threshold1>
+          <cv:Threshold2>300</cv:Threshold2>
+          <cv:ApertureSize>3</cv:ApertureSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:MorphologicalOperator">
-          <q1:Size>
-            <q1:Width>3</q1:Width>
-            <q1:Height>3</q1:Height>
-          </q1:Size>
-          <q1:Anchor>
-            <q1:X>1</q1:X>
-            <q1:Y>1</q1:Y>
-          </q1:Anchor>
-          <q1:Shape>Ellipse</q1:Shape>
-          <q1:Iterations>4</q1:Iterations>
-          <q1:Operation>Dilate</q1:Operation>
+        <Combinator xsi:type="cv:MorphologicalOperator">
+          <cv:Size>
+            <cv:Width>3</cv:Width>
+            <cv:Height>3</cv:Height>
+          </cv:Size>
+          <cv:Anchor>
+            <cv:X>1</cv:X>
+            <cv:Y>1</cv:Y>
+          </cv:Anchor>
+          <cv:Shape>Ellipse</cv:Shape>
+          <cv:Iterations>4</cv:Iterations>
+          <cv:Operation>Dilate</cv:Operation>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Grayscale" />
+        <Combinator xsi:type="cv:Grayscale" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:Threshold">
-          <q1:ThresholdValue>128</q1:ThresholdValue>
-          <q1:MaxValue>255</q1:MaxValue>
-          <q1:ThresholdType>Binary</q1:ThresholdType>
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>128</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:EqualizeHistogram" />
+        <Combinator xsi:type="cv:EqualizeHistogram" />
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="1" To="3" Label="Source1" />
+      <Edge From="1" To="4" Label="Source1" />
+      <Edge From="1" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="5" To="7" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Vision.LoadImage, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Delay, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Smooth, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Canny, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.MorphologicalOperator, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.EqualizeHistogram, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

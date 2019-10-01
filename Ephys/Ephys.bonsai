@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:q1="clr-namespace:Bonsai.Ephys;assembly=Bonsai.Ephys"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:Rhd2000EvalBoard">
@@ -18,10 +22,14 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.AmplifierData</Selector>
+        <Selector>AmplifierData</Selector>
       </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.BufferCapacity</Selector>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:MatrixWriter">
+          <dsp:Suffix>None</dsp:Suffix>
+          <dsp:Overwrite>false</dsp:Overwrite>
+          <dsp:Layout>ColumnMajor</dsp:Layout>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:AdcScale">
@@ -29,84 +37,44 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:SelectChannels">
-          <q2:Channels>
-            <q2:int>1</q2:int>
-            <q2:int>2</q2:int>
-          </q2:Channels>
+        <Combinator xsi:type="dsp:SelectChannels">
+          <dsp:Channels>
+            <dsp:int>1</dsp:int>
+            <dsp:int>2</dsp:int>
+          </dsp:Channels>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FrequencyFilter">
-          <q2:SamplingFrequency>30000</q2:SamplingFrequency>
-          <q2:Cutoff1>300</q2:Cutoff1>
-          <q2:Cutoff2>0</q2:Cutoff2>
-          <q2:KernelLength>60</q2:KernelLength>
-          <q2:FilterType>HighPass</q2:FilterType>
+        <Combinator xsi:type="dsp:FrequencyFilter">
+          <dsp:SampleRate>30000</dsp:SampleRate>
+          <dsp:Cutoff1>300</dsp:Cutoff1>
+          <dsp:Cutoff2>0</dsp:Cutoff2>
+          <dsp:KernelLength>60</dsp:KernelLength>
+          <dsp:FilterType>HighPass</dsp:FilterType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:DetectSpikes">
-          <q2:Delay>20</q2:Delay>
-          <q2:Length>60</q2:Length>
-          <q2:Threshold>
-            <q2:double>-100</q2:double>
-          </q2:Threshold>
-          <q2:WaveformRefinement>AlignPeaks</q2:WaveformRefinement>
+        <Combinator xsi:type="dsp:DetectSpikes">
+          <dsp:Delay>20</dsp:Delay>
+          <dsp:Length>60</dsp:Length>
+          <dsp:Threshold>
+            <dsp:double>-100</dsp:double>
+          </dsp:Threshold>
+          <dsp:WaveformRefinement>AlignPeaks</dsp:WaveformRefinement>
         </Combinator>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MatrixWriter">
-          <q2:Suffix>None</q2:Suffix>
-          <q2:Overwrite>false</q2:Overwrite>
-          <q2:Layout>ColumnMajor</q2:Layout>
-        </Combinator>
+      <Expression xsi:type="MemberSelector">
+        <Selector>BufferCapacity</Selector>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>0</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="0" To="7" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Ephys.Rhd2000EvalBoard, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Ephys.AdcScale, Bonsai.Ephys, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.SelectChannels, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.FrequencyFilter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.DetectSpikes, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.MatrixWriter, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

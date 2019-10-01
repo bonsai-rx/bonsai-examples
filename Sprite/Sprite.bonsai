@@ -1,30 +1,98 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:gli="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders"
+                 xmlns:q1="clr-namespace:OpenTK.Input;assembly=OpenTK"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DrawMesh">
-          <q1:ShaderName>Circle</q1:ShaderName>
-          <q1:MeshName>Sprite</q1:MeshName>
+        <Combinator xsi:type="gl:CreateWindow">
+          <gl:Width>640</gl:Width>
+          <gl:Height>480</gl:Height>
+          <gl:VSync>On</gl:VSync>
+          <gl:SwapSync>false</gl:SwapSync>
+          <gl:ClearColor>Black</gl:ClearColor>
+          <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
+          <gl:CursorVisible>true</gl:CursorVisible>
+          <gl:Location xsi:nil="true" />
+          <gl:WindowBorder>Resizable</gl:WindowBorder>
+          <gl:WindowState>Normal</gl:WindowState>
+          <gl:DisplayDevice>Primary</gl:DisplayDevice>
+          <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:RenderState />
+          <gl:GraphicsMode>
+            <gl:ColorFormat>
+              <gl:Red>8</gl:Red>
+              <gl:Green>8</gl:Green>
+              <gl:Blue>8</gl:Blue>
+              <gl:Alpha>8</gl:Alpha>
+            </gl:ColorFormat>
+            <gl:Depth>16</gl:Depth>
+            <gl:Stencil>0</gl:Stencil>
+            <gl:Samples>0</gl:Samples>
+            <gl:AccumulatorFormat>
+              <gl:Red>0</gl:Red>
+              <gl:Green>0</gl:Green>
+              <gl:Blue>0</gl:Blue>
+              <gl:Alpha>0</gl:Alpha>
+            </gl:AccumulatorFormat>
+            <gl:Buffers>2</gl:Buffers>
+            <gl:Stereo>false</gl:Stereo>
+          </gl:GraphicsMode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:MouseMove" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:NormalizedDeviceCoordinates" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.X,Source.Y</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateUniform">
-          <q1:UniformName>scale</q1:UniformName>
-          <q1:ShaderName>Circle</q1:ShaderName>
+        <Combinator xsi:type="gl:MeshResources">
+          <gl:Meshes>
+            <gl:MeshConfiguration xsi:type="gl:TexturedQuad">
+              <gl:Name>Sprite</gl:Name>
+              <gl:QuadEffects>None</gl:QuadEffects>
+            </gl:MeshConfiguration>
+          </gl:Meshes>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:ShaderResources">
+          <gl:Shaders>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>Circle</gl:Name>
+              <gl:RenderState />
+              <gl:ShaderUniforms>
+                <gl:UniformConfiguration xsi:type="gl:Vec4Uniform">
+                  <gl:Name>color</gl:Name>
+                  <gl:Value>
+                    <gl:X>1</gl:X>
+                    <gl:Y>1</gl:Y>
+                    <gl:Z>1</gl:Z>
+                    <gl:W>1</gl:W>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+              </gl:ShaderUniforms>
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>quad.vert</gl:VertexShader>
+              <gl:FragmentShader>circle.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+          </gl:Shaders>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="res:LoadResources" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:UpdateFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:DrawMesh">
+          <gl:ShaderName>Circle</gl:ShaderName>
+          <gl:MeshName>Sprite</gl:MeshName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gli:MouseMove" />
       </Expression>
       <Expression xsi:type="Condition">
         <Name>RightButtonPressed</Name>
@@ -33,34 +101,34 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="MemberSelector">
-              <Selector>Source.EventArgs.Mouse.RightButton</Selector>
+              <Selector>EventArgs.Mouse.RightButton</Selector>
             </Expression>
             <Expression xsi:type="Equal">
-              <Operand xsi:type="WorkflowPropertyOfButtonState">
+              <Operand xsi:type="WorkflowProperty" TypeArguments="q1:ButtonState">
                 <Value>Pressed</Value>
               </Operand>
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gli:NormalizedDeviceCoordinates" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>X,Y</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:UpdateUniform">
+          <gl:UniformName>scale</gl:UniformName>
+          <gl:ShaderName>Circle</gl:ShaderName>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Condition">
         <Name>RightButtonReleased</Name>
@@ -69,103 +137,49 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="MemberSelector">
-              <Selector>Source.EventArgs.Mouse.RightButton</Selector>
+              <Selector>EventArgs.Mouse.RightButton</Selector>
             </Expression>
             <Expression xsi:type="Equal">
-              <Operand xsi:type="WorkflowPropertyOfButtonState">
+              <Operand xsi:type="WorkflowProperty" TypeArguments="q1:ButtonState">
                 <Value>Released</Value>
               </Operand>
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateUniform">
-          <q1:UniformName>shift</q1:UniformName>
-          <q1:ShaderName>Circle</q1:ShaderName>
-        </Combinator>
+        <Combinator xsi:type="gli:NormalizedDeviceCoordinates" />
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.X,Source.Y</Selector>
+        <Selector>X,Y</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:NormalizedDeviceCoordinates" />
+        <Combinator xsi:type="gl:UpdateUniform">
+          <gl:UniformName>shift</gl:UniformName>
+          <gl:ShaderName>Circle</gl:ShaderName>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="6" To="11" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawMesh, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.Input.MouseMove, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.Input.NormalizedDeviceCoordinates, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.WorkflowProperty`1[[OpenTK.Input.ButtonState, OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

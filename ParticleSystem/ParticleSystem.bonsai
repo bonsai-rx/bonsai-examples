@@ -1,26 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DrawArrays">
-          <q1:MaterialName>Particles</q1:MaterialName>
-          <q1:DrawMode>Points</q1:DrawMode>
-          <q1:Usage>DynamicDraw</q1:Usage>
-          <q1:VertexAttributes>
-            <q1:VertexAttributeMapping>
-              <q1:Size>3</q1:Size>
-              <q1:Normalized>false</q1:Normalized>
-              <q1:Type>Float</q1:Type>
-            </q1:VertexAttributeMapping>
-          </q1:VertexAttributes>
+        <Combinator xsi:type="gl:CreateWindow">
+          <gl:Width>640</gl:Width>
+          <gl:Height>480</gl:Height>
+          <gl:VSync>On</gl:VSync>
+          <gl:SwapSync>false</gl:SwapSync>
+          <gl:ClearColor>Black</gl:ClearColor>
+          <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
+          <gl:CursorVisible>true</gl:CursorVisible>
+          <gl:Location xsi:nil="true" />
+          <gl:WindowBorder>Resizable</gl:WindowBorder>
+          <gl:WindowState>Normal</gl:WindowState>
+          <gl:DisplayDevice>Primary</gl:DisplayDevice>
+          <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:RenderState>
+            <gl:StateConfiguration xsi:type="gl:EnableState">
+              <gl:Capability>Blend</gl:Capability>
+            </gl:StateConfiguration>
+            <gl:StateConfiguration xsi:type="gl:BlendFunctionState">
+              <gl:SourceFactor>SrcAlpha</gl:SourceFactor>
+              <gl:DestinationFactor>OneMinusSrcAlpha</gl:DestinationFactor>
+            </gl:StateConfiguration>
+            <gl:StateConfiguration xsi:type="gl:EnableState">
+              <gl:Capability>PointSprite</gl:Capability>
+            </gl:StateConfiguration>
+            <gl:StateConfiguration xsi:type="gl:EnableState">
+              <gl:Capability>ProgramPointSize</gl:Capability>
+            </gl:StateConfiguration>
+          </gl:RenderState>
+          <gl:GraphicsMode>
+            <gl:ColorFormat>
+              <gl:Red>8</gl:Red>
+              <gl:Green>8</gl:Green>
+              <gl:Blue>8</gl:Blue>
+              <gl:Alpha>8</gl:Alpha>
+            </gl:ColorFormat>
+            <gl:Depth>16</gl:Depth>
+            <gl:Stencil>0</gl:Stencil>
+            <gl:Samples>0</gl:Samples>
+            <gl:AccumulatorFormat>
+              <gl:Red>0</gl:Red>
+              <gl:Green>0</gl:Green>
+              <gl:Blue>0</gl:Blue>
+              <gl:Alpha>0</gl:Alpha>
+            </gl:AccumulatorFormat>
+            <gl:Buffers>2</gl:Buffers>
+            <gl:Stereo>false</gl:Stereo>
+          </gl:GraphicsMode>
         </Combinator>
       </Expression>
-      <Expression xsi:type="q2:PythonTransform">
-        <q2:Script>import clr
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:ShaderResources">
+          <gl:Shaders>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>Particles</gl:Name>
+              <gl:RenderState />
+              <gl:ShaderUniforms>
+                <gl:UniformConfiguration xsi:type="gl:Vec4Uniform">
+                  <gl:Name>color</gl:Name>
+                  <gl:Value>
+                    <gl:X>1</gl:X>
+                    <gl:Y>1</gl:Y>
+                    <gl:Z>1</gl:Z>
+                    <gl:W>1</gl:W>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+              </gl:ShaderUniforms>
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>particles.vert</gl:VertexShader>
+              <gl:FragmentShader>particles.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+          </gl:Shaders>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="res:LoadResources" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:UpdateFrame" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import clr
 clr.AddReference("OpenTK")
 from OpenTK import Vector2, Vector3
 from System import Array, Single, Random
@@ -97,25 +166,28 @@ def process(value):
       p.activate(source,Vector2(vx,vy),mass,size)
       spawncount -= 1
 
-  return Array[Vector3]([Vector3(p.pos.X,p.pos.Y,p.size) for p in particles if p.active])</q2:Script>
+  return Array[Vector3]([Vector3(p.pos.X,p.pos.Y,p.size) for p in particles if p.active])</scr:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:DrawArrays">
+          <gl:ShaderName>Particles</gl:ShaderName>
+          <gl:DrawMode>Points</gl:DrawMode>
+          <gl:Usage>DynamicDraw</gl:Usage>
+          <gl:VertexAttributes>
+            <gl:VertexAttributeMapping>
+              <gl:Size>3</gl:Size>
+              <gl:Normalized>false</gl:Normalized>
+              <gl:Type>Float</gl:Type>
+            </gl:VertexAttributeMapping>
+          </gl:VertexAttributes>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

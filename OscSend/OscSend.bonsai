@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.X</Selector>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="osc:CreateUdpClient">
+          <osc:Name>UdpSend</osc:Name>
+          <osc:Port>0</osc:Port>
+          <osc:RemoteHostName>localhost</osc:RemoteHostName>
+          <osc:RemotePort>2323</osc:RemotePort>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:MouseMove" />
+        <Combinator xsi:type="wie:MouseMove" />
       </Expression>
-      <Expression xsi:type="q2:SendMessage">
-        <q2:Connection>UdpSend</q2:Connection>
-        <q2:Address>/number</q2:Address>
+      <Expression xsi:type="MemberSelector">
+        <Selector>X</Selector>
+      </Expression>
+      <Expression xsi:type="osc:SendMessage">
+        <osc:Connection>UdpSend</osc:Connection>
+        <osc:Address>/number</osc:Address>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Windows.Input.MouseMove, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Osc.SendMessage, Bonsai.Osc, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

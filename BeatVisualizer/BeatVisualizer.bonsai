@@ -1,103 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:AudioCapture">
-          <q1:Frequency>44100</q1:Frequency>
-          <q1:SampleFormat>Mono16</q1:SampleFormat>
-          <q1:BufferLength>10</q1:BufferLength>
+        <Combinator xsi:type="al:AudioCapture">
+          <al:SampleRate>44100</al:SampleRate>
+          <al:SampleFormat>Mono16</al:SampleFormat>
+          <al:BufferLength>10</al:BufferLength>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Pow">
-          <q2:Power>0.5</q2:Power>
+        <Combinator xsi:type="dsp:Pow">
+          <dsp:Power>2</dsp:Power>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Average" />
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Val0</Selector>
+        <Selector>Val0</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:LoadImage">
-          <q3:FileName>Cajal.jpg</q3:FileName>
-          <q3:Mode>Unchanged</q3:Mode>
+        <Combinator xsi:type="dsp:Pow">
+          <dsp:Power>0.5</dsp:Power>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:LoadImage">
+          <cv:FileName>Cajal.jpg</cv:FileName>
+          <cv:Mode>Unchanged</cv:Mode>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
       <Expression xsi:type="InputMapping">
         <PropertyMappings>
-          <Property name="ThresholdValue" selector="Source.Item1" />
+          <Property Name="ThresholdValue" Selector="Item1" />
         </PropertyMappings>
-        <Selector>Source.Item2</Selector>
+        <Selector>Item2</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:Threshold">
-          <q3:ThresholdValue>9.1698510238963813</q3:ThresholdValue>
-          <q3:MaxValue>255</q3:MaxValue>
-          <q3:ThresholdType>BinaryInv</q3:ThresholdType>
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>10</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>BinaryInv</cv:ThresholdType>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Pow">
-          <q2:Power>2</q2:Power>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Average" />
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>3</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="6" Label="Source1" />
+      <Edge From="5" To="6" Label="Source2" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Audio.AudioCapture, Bonsai.Audio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Pow, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.LoadImage, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.InputMappingBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Average, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

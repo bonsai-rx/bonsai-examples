@@ -1,12 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q3="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:AudioCapture">
-          <q1:Frequency>22050</q1:Frequency>
-          <q1:SampleFormat>Mono16</q1:SampleFormat>
-          <q1:BufferLength>10</q1:BufferLength>
+        <Combinator xsi:type="al:AudioCapture">
+          <al:SampleRate>22050</al:SampleRate>
+          <al:SampleFormat>Mono16</al:SampleFormat>
+          <al:BufferLength>10</al:BufferLength>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:ConvertScale">
+          <dsp:Depth>F32</dsp:Depth>
+          <dsp:Scale>1</dsp:Scale>
+          <dsp:Shift>0</dsp:Shift>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:RunningAverage">
+          <dsp:Alpha>0.5</dsp:Alpha>
         </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
@@ -14,136 +32,105 @@
         <Description>Computes the power spectrum of the audio signal using a discrete Fourier transform.</Description>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Submatrix">
-                <q2:StartRow>0</q2:StartRow>
-                <q2:EndRow xsi:nil="true" />
-                <q2:StartCol>0</q2:StartCol>
-                <q2:EndCol>256</q2:EndCol>
-              </Combinator>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:DiscreteFourierTransform">
-                <q2:OperationFlags>Forward</q2:OperationFlags>
-              </Combinator>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="BufferSize" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
                 <Value>512</Value>
               </Combinator>
             </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="ExternalizedPropertyOfInt32ElementCountBuffer">
-              <MemberName>Count</MemberName>
-              <Name />
-              <Value>1024</Value>
-            </Expression>
-            <Expression xsi:type="ExternalizedPropertyOfNullableOfInt32Submatrix">
-              <MemberName>EndCol</MemberName>
-              <Name />
-              <Value>256</Value>
-            </Expression>
             <Expression xsi:type="Divide">
               <Operand xsi:type="IntProperty">
                 <Value>2</Value>
               </Operand>
             </Expression>
-            <Expression xsi:type="ExternalizedPropertyOfInt32IntProperty">
-              <MemberName>Value</MemberName>
-              <Name>BufferSize</Name>
-              <Value>512</Value>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="EndCol" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Count" />
+              </PropertyMappings>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Buffer">
-                <q2:Count>512</q2:Count>
-                <q2:Skip xsi:nil="true" />
+              <Combinator xsi:type="dsp:Buffer">
+                <dsp:Count>512</dsp:Count>
+                <dsp:Skip xsi:nil="true" />
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q2:Magnitude" />
+              <Combinator xsi:type="dsp:DiscreteFourierTransform">
+                <dsp:OperationFlags>Forward</dsp:OperationFlags>
+              </Combinator>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Submatrix">
+                <dsp:StartRow>0</dsp:StartRow>
+                <dsp:EndRow xsi:nil="true" />
+                <dsp:StartCol>0</dsp:StartCol>
+                <dsp:EndCol>256</dsp:EndCol>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="dsp:Magnitude" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>10</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>5</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>9</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>9</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>0</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>10</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
+            <Edge From="0" To="6" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="8" Label="Source2" />
+            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:RunningAverage">
-          <q2:Alpha>0.5</q2:Alpha>
+        <Combinator xsi:type="dsp:Extrema" />
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="MinPitch" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>35</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="PitchRange" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>50</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="MagnitudeScale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="FloatProperty">
+          <Value>50000</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:ConvertScale">
-          <q2:Depth>F32</q2:Depth>
-          <q2:Scale>1</q2:Scale>
-          <q2:Shift>0</q2:Shift>
-        </Combinator>
+        <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Extrema" />
-      </Expression>
-      <Expression xsi:type="q3:PythonTransform">
-        <q3:Name>UpdateCanvas</q3:Name>
-        <q3:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</q3:Description>
-        <q3:Script>import clr
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>UpdateCanvas</scr:Name>
+        <scr:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</scr:Description>
+        <scr:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 from math import sin, cos, pi
@@ -178,122 +165,22 @@ def unload():
   output.Close()
   output = None
   particle = None
-</q3:Script>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="FloatProperty">
-          <Value>35</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="FloatProperty">
-          <Value>50</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="FloatProperty">
-          <Value>50000</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="ExternalizedPropertyOfSingleFloatProperty">
-        <MemberName>Value</MemberName>
-        <Name>MinPitch</Name>
-        <Value>35</Value>
-      </Expression>
-      <Expression xsi:type="ExternalizedPropertyOfSingleFloatProperty">
-        <MemberName>Value</MemberName>
-        <Name>PitchRange</Name>
-        <Value>50</Value>
-      </Expression>
-      <Expression xsi:type="ExternalizedPropertyOfSingleFloatProperty">
-        <MemberName>Value</MemberName>
-        <Name>MagnitudeScale</Name>
-        <Value>50000</Value>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
+</scr:Script>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>2</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>12</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>12</To>
-        <Label>Source3</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>12</To>
-        <Label>Source4</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="11" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="11" Label="Source2" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="11" Label="Source3" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source4" />
+      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Audio.AudioCapture, Bonsai.Audio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Submatrix, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.DiscreteFourierTransform, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.ElementCountBuffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Dsp.Submatrix, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.DivideBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Magnitude, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.RunningAverage, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.ConvertScale, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Extrema, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.FloatProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.FloatProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>

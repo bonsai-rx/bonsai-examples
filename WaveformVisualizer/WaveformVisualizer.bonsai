@@ -1,30 +1,117 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.1">
-  <Workflow xmlns:q1="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q2="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DrawMesh">
-          <q1:ShaderName>Waveform</q1:ShaderName>
-          <q1:MeshName>Waveform</q1:MeshName>
+        <Combinator xsi:type="gl:CreateWindow">
+          <gl:Width>640</gl:Width>
+          <gl:Height>480</gl:Height>
+          <gl:VSync>On</gl:VSync>
+          <gl:SwapSync>false</gl:SwapSync>
+          <gl:ClearColor>Black</gl:ClearColor>
+          <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
+          <gl:CursorVisible>true</gl:CursorVisible>
+          <gl:Location xsi:nil="true" />
+          <gl:WindowBorder>Resizable</gl:WindowBorder>
+          <gl:WindowState>Normal</gl:WindowState>
+          <gl:DisplayDevice>Primary</gl:DisplayDevice>
+          <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:RenderState />
+          <gl:GraphicsMode>
+            <gl:ColorFormat>
+              <gl:Red>8</gl:Red>
+              <gl:Green>8</gl:Green>
+              <gl:Blue>8</gl:Blue>
+              <gl:Alpha>8</gl:Alpha>
+            </gl:ColorFormat>
+            <gl:Depth>16</gl:Depth>
+            <gl:Stencil>0</gl:Stencil>
+            <gl:Samples>0</gl:Samples>
+            <gl:AccumulatorFormat>
+              <gl:Red>0</gl:Red>
+              <gl:Green>0</gl:Green>
+              <gl:Blue>0</gl:Blue>
+              <gl:Alpha>0</gl:Alpha>
+            </gl:AccumulatorFormat>
+            <gl:Buffers>2</gl:Buffers>
+            <gl:Stereo>false</gl:Stereo>
+          </gl:GraphicsMode>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:AudioCapture">
-          <q2:Frequency>44100</q2:Frequency>
-          <q2:SampleFormat>Mono16</q2:SampleFormat>
-          <q2:BufferLength>10</q2:BufferLength>
+        <Combinator xsi:type="gl:MeshResources">
+          <gl:Meshes>
+            <gl:MeshConfiguration>
+              <gl:Name>Waveform</gl:Name>
+            </gl:MeshConfiguration>
+          </gl:Meshes>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:Rescale">
-          <q3:Min>-20000</q3:Min>
-          <q3:Max>20000</q3:Max>
-          <q3:RangeMin>-1</q3:RangeMin>
-          <q3:RangeMax>1</q3:RangeMax>
-          <q3:RescaleType>Linear</q3:RescaleType>
+        <Combinator xsi:type="gl:ShaderResources">
+          <gl:Shaders>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>Waveform</gl:Name>
+              <gl:RenderState />
+              <gl:ShaderUniforms>
+                <gl:UniformConfiguration xsi:type="gl:Vec4Uniform">
+                  <gl:Name>color</gl:Name>
+                  <gl:Value>
+                    <gl:X>1</gl:X>
+                    <gl:Y>1</gl:Y>
+                    <gl:Z>1</gl:Z>
+                    <gl:W>1</gl:W>
+                  </gl:Value>
+                </gl:UniformConfiguration>
+              </gl:ShaderUniforms>
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>waveform.vert</gl:VertexShader>
+              <gl:GeometryShader>waveform.geom</gl:GeometryShader>
+              <gl:FragmentShader>waveform.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+          </gl:Shaders>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="res:LoadResources" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:UpdateFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:DrawMesh">
+          <gl:ShaderName>Waveform</gl:ShaderName>
+          <gl:MeshName>Waveform</gl:MeshName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="al:AudioCapture">
+          <al:SampleRate>44100</al:SampleRate>
+          <al:SampleFormat>Mono16</al:SampleFormat>
+          <al:BufferLength>10</al:BufferLength>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Buffer">
+          <dsp:Count>44100</dsp:Count>
+          <dsp:Skip>441</dsp:Skip>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:Rescale">
+          <dsp:Min>-20000</dsp:Min>
+          <dsp:Max>20000</dsp:Max>
+          <dsp:RangeMin>-1</dsp:RangeMin>
+          <dsp:RangeMax>1</dsp:RangeMax>
+          <dsp:RescaleType>Linear</dsp:RescaleType>
         </Combinator>
       </Expression>
       <Expression xsi:type="Sink">
@@ -36,174 +123,86 @@
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="MemberSelector">
-              <Selector>Source.Rows</Selector>
+              <Selector>Rows</Selector>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="ShaderName" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>rows</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
+              </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
-              <Selector>Source.Cols</Selector>
+              <Selector>Cols</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:UpdateUniform">
-                <q1:UniformName>rows</q1:UniformName>
-                <q1:ShaderName>Waveform</q1:ShaderName>
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>cols</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q1:UpdateUniform">
-                <q1:UniformName>cols</q1:UniformName>
-                <q1:ShaderName>Waveform</q1:ShaderName>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedPropertyOfStringUpdateUniform">
-              <MemberName>ShaderName</MemberName>
-              <Name>ShaderName</Name>
-              <Value>Waveform</Value>
             </Expression>
           </Nodes>
           <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>3</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>3</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>4</To>
-              <Label>Source2</Label>
-            </Edge>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="4" Label="Source1" />
+            <Edge From="1" To="3" Label="Source1" />
+            <Edge From="2" To="3" Label="Source2" />
+            <Edge From="2" To="5" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Zip" />
-      </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Rows,Source.Cols</Selector>
+        <Selector>Rows,Cols</Selector>
       </Expression>
       <Expression xsi:type="Multiply" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
       <Expression xsi:type="InputMapping">
         <PropertyMappings>
-          <Property name="Rows" selector="Source.Item2" />
+          <Property Name="Rows" Selector="Item2" />
         </PropertyMappings>
-        <Selector>Source.Item1</Selector>
+        <Selector>Item1</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:Reshape">
-          <q3:Channels>0</q3:Channels>
-          <q3:Rows>44100</q3:Rows>
+        <Combinator xsi:type="dsp:Reshape">
+          <dsp:Channels>0</dsp:Channels>
+          <dsp:Rows>44100</dsp:Rows>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:UpdateVertexBuffer">
-          <q1:MeshName>Waveform</q1:MeshName>
-          <q1:DrawMode>LineStrip</q1:DrawMode>
-          <q1:Usage>DynamicDraw</q1:Usage>
-          <q1:VertexAttributes>
-            <q1:VertexAttributeMapping>
-              <q1:Size>1</q1:Size>
-              <q1:Normalized>false</q1:Normalized>
-              <q1:Type>Float</q1:Type>
-            </q1:VertexAttributeMapping>
-          </q1:VertexAttributes>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:Buffer">
-          <q3:Count>44100</q3:Count>
-          <q3:Skip>441</q3:Skip>
+        <Combinator xsi:type="gl:UpdateVertexBuffer">
+          <gl:MeshName>Waveform</gl:MeshName>
+          <gl:DrawMode>LineStrip</gl:DrawMode>
+          <gl:Usage>DynamicDraw</gl:Usage>
+          <gl:VertexAttributes>
+            <gl:VertexAttributeMapping>
+              <gl:Size>1</gl:Size>
+              <gl:Normalized>false</gl:Normalized>
+              <gl:Type>Float</gl:Type>
+            </gl:VertexAttributeMapping>
+          </gl:VertexAttributes>
         </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>11</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>5</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>10</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="12" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source2" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawMesh, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Audio.AudioCapture, Bonsai.Audio, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Rescale, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.SinkBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.InputMappingBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Reshape, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateVertexBuffer, Bonsai.Shaders, Version=0.14.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.Buffer, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>
