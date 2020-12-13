@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.5.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
@@ -22,7 +22,8 @@
           <gl:WindowBorder>Resizable</gl:WindowBorder>
           <gl:WindowState>Normal</gl:WindowState>
           <gl:DisplayDevice>Primary</gl:DisplayDevice>
-          <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
+          <gl:TargetUpdateFrequency xsi:nil="true" />
           <gl:RenderState />
           <gl:GraphicsMode>
             <gl:ColorFormat>

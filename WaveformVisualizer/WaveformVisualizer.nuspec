@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bonsai.Examples.WaveformVisualizer</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Bonsai - Waveform Visualizer Example</title>
     <authors>glopes</authors>
     <owners>glopes</owners>
@@ -11,15 +11,15 @@
     <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An example of using vertex buffers to build a fast waveform visualizer in Bonsai.</description>
-    <copyright>Gonçalo Lopes © 2019</copyright>
+    <copyright>Gonçalo Lopes © 2020</copyright>
     <tags>Waveform Visualizer Shaders Example Bonsai Gallery</tags>
     <dependencies>
-      <dependency id="Bonsai.Core" version="2.4.0" />
-      <dependency id="Bonsai.Shaders" version="0.19.0" />
-      <dependency id="Bonsai.Shaders.Design" version="0.19.0" />
-      <dependency id="Bonsai.Audio" version="2.4.0" />
-      <dependency id="Bonsai.Dsp" version="2.4.0" />
-      <dependency id="Bonsai.System" version="2.4.0" />
+      <dependency id="Bonsai.Core" version="2.5.1" />
+      <dependency id="Bonsai.Shaders" version="0.23.0" />
+      <dependency id="Bonsai.Shaders.Design" version="0.23.0" />
+      <dependency id="Bonsai.Audio" version="2.5.0" />
+      <dependency id="Bonsai.Dsp" version="2.5.0" />
+      <dependency id="Bonsai.System" version="2.5.1" />
     </dependencies>
   </metadata>
 </package>
