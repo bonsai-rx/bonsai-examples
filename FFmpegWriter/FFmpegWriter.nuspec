@@ -10,7 +10,7 @@
     <licenseUrl>https://bonsai-rx.org/license</licenseUrl>
     <projectUrl>https://github.com/bonsai-rx/bonsai-examples</projectUrl>
     <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
-    <description>A recording interface to facilitate recording live video with an external FFmpeg process.</description>
+    <description>An example of how to flexibly record live video using FFmpeg. This example requires copying the FFmpeg executable binaries into the Bonsai extensions folder (or adding it to the system PATH).</description>
     <copyright>Gonçalo Lopes © 2021</copyright>
     <tags>FFmpeg Writer Example Bonsai Gallery</tags>
     <packageTypes>
