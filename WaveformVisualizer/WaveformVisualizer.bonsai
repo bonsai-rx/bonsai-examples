@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.1"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
@@ -85,7 +85,7 @@
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:UpdateFrame" />
+        <Combinator xsi:type="gl:RenderFrame" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:DrawMesh">
@@ -115,7 +115,7 @@
           <dsp:RescaleType>Linear</dsp:RescaleType>
         </Combinator>
       </Expression>
-      <Expression xsi:type="Sink">
+      <Expression xsi:type="rx:Sink">
         <Name>UpdateSizeUniform</Name>
         <Description>Updates information about the number of channels and samples in the waveform visualizer.</Description>
         <Workflow>

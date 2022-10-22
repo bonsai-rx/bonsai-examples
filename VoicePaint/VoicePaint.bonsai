@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -27,7 +27,7 @@
           <dsp:Alpha>0.5</dsp:Alpha>
         </Combinator>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>PowerSpectrum</Name>
         <Description>Computes the power spectrum of the audio signal using a discrete Fourier transform.</Description>
         <Workflow>
@@ -127,10 +127,10 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>UpdateCanvas</scr:Name>
-        <scr:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</scr:Description>
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>UpdateCanvas</ipy:Name>
+        <ipy:Description>Iteratively paints a canvas by moving a particle controlled by the input pitch and magnitude.</ipy:Description>
+        <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 from math import sin, cos, pi
@@ -165,7 +165,7 @@ def unload():
   output.Close()
   output = None
   particle = None
-</scr:Script>
+</ipy:Script>
       </Expression>
     </Nodes>
     <Edges>

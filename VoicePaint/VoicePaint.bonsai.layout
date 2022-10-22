@@ -55,7 +55,7 @@
         <XMin>0</XMin>
         <XMax>256</XMax>
         <YMin>0</YMin>
-        <YMax>18000</YMax>
+        <YMax>700</YMax>
         <AutoScaleX>true</AutoScaleX>
         <AutoScaleY>true</AutoScaleY>
         <SelectedPage>0</SelectedPage>
@@ -78,10 +78,6 @@
       <Height>70</Height>
     </Size>
     <WindowState>Normal</WindowState>
-    <VisualizerTypeName>Bonsai.Design.ObjectTextVisualizer</VisualizerTypeName>
-    <VisualizerSettings>
-      <ObjectTextVisualizer />
-    </VisualizerSettings>
   </DialogSettings>
   <DialogSettings>
     <Visible>false</Visible>

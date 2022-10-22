@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -93,10 +93,10 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Name>DrawCentroid</scr:Name>
-        <scr:Description>A Python script used to overlay the tracking results on top of the camera image.</scr:Description>
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Name>DrawCentroid</ipy:Name>
+        <ipy:Description>A Python script used to overlay the tracking results on top of the camera image.</ipy:Description>
+        <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 
@@ -114,7 +114,7 @@ def process(value):
   if green.Area &gt; 0:
     CV.Circle(output, Point(green.Centroid), 10, Scalar.Rgb(0, 255, 0), -1)
 
-  return output</scr:Script>
+  return output</ipy:Script>
       </Expression>
     </Nodes>
     <Edges>

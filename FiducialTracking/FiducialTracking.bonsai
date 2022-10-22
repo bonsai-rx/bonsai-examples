@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:q1="clr-namespace:Bonsai.Aruco;assembly=Bonsai.Aruco"
+                 xmlns:aruco="clr-namespace:Bonsai.Aruco;assembly=Bonsai.Aruco"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
@@ -23,6 +23,7 @@
           <gl:WindowState>Normal</gl:WindowState>
           <gl:DisplayDevice>Primary</gl:DisplayDevice>
           <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:TargetUpdateFrequency xsi:nil="true" />
           <gl:RenderState>
             <gl:StateConfiguration xsi:type="gl:DepthFunctionState">
               <gl:Function>Less</gl:Function>
@@ -164,20 +165,20 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:DetectMarkers">
-          <q1:CameraParameters>CameraCalibration.yml</q1:CameraParameters>
-          <q1:ThresholdMethod>AdaptiveThreshold</q1:ThresholdMethod>
-          <q1:Param1>7</q1:Param1>
-          <q1:Param2>7</q1:Param2>
-          <q1:MinSize>0.04</q1:MinSize>
-          <q1:MaxSize>0.5</q1:MaxSize>
-          <q1:CornerRefinement>Lines</q1:CornerRefinement>
-          <q1:MarkerSize>10</q1:MarkerSize>
+        <Combinator xsi:type="aruco:DetectMarkers">
+          <aruco:CameraParameters>CameraCalibration.yml</aruco:CameraParameters>
+          <aruco:ThresholdMethod>AdaptiveThreshold</aruco:ThresholdMethod>
+          <aruco:Param1>7</aruco:Param1>
+          <aruco:Param2>7</aruco:Param2>
+          <aruco:MinSize>0.04</aruco:MinSize>
+          <aruco:MaxSize>0.5</aruco:MaxSize>
+          <aruco:CornerRefinement>Lines</aruco:CornerRefinement>
+          <aruco:MarkerSize>10</aruco:MarkerSize>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:SelectMarker">
-          <q1:Id>345</q1:Id>
+        <Combinator xsi:type="aruco:SelectMarker">
+          <aruco:Id>345</aruco:Id>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -203,7 +204,7 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q1:MarkerViewMatrix" />
+        <Combinator xsi:type="aruco:MarkerViewMatrix" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Zip" />

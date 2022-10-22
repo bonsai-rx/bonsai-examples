@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:gli="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders"
-                 xmlns:q1="clr-namespace:OpenTK.Input;assembly=OpenTK"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:p1="clr-namespace:OpenTK.Input;assembly=OpenTK"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -23,6 +23,7 @@
           <gl:WindowState>Normal</gl:WindowState>
           <gl:DisplayDevice>Primary</gl:DisplayDevice>
           <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:TargetUpdateFrequency xsi:nil="true" />
           <gl:RenderState>
             <gl:StateConfiguration xsi:type="gl:EnableState">
               <gl:Capability>DepthTest</gl:Capability>
@@ -110,7 +111,7 @@
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:UpdateFrame" />
+        <Combinator xsi:type="gl:RenderFrame" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreatePerspectiveFieldOfView">
@@ -135,7 +136,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gli:MouseMove" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Name>RightButtonPressed</Name>
         <Workflow>
           <Nodes>
@@ -146,7 +147,7 @@
               <Selector>EventArgs.Mouse.RightButton</Selector>
             </Expression>
             <Expression xsi:type="Equal">
-              <Operand xsi:type="WorkflowProperty" TypeArguments="q1:ButtonState">
+              <Operand xsi:type="WorkflowProperty" TypeArguments="p1:ButtonState">
                 <Value>Pressed</Value>
               </Operand>
             </Expression>
@@ -162,7 +163,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gli:NormalizedDeviceCoordinates" />
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Scale</Name>
         <Workflow>
           <Nodes>
@@ -200,8 +201,8 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateVector3">
-          <gl:X>0.0156247616</gl:X>
-          <gl:Y>0.9166664</gl:Y>
+          <gl:X>1.37500048</gl:X>
+          <gl:Y>-2.52777815</gl:Y>
           <gl:Z>5</gl:Z>
         </Combinator>
       </Expression>
@@ -211,7 +212,7 @@
           <gl:ShaderName>PerPixelLight</gl:ShaderName>
         </Combinator>
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Name>RightButtonReleased</Name>
         <Workflow>
           <Nodes>
@@ -222,7 +223,7 @@
               <Selector>EventArgs.Mouse.RightButton</Selector>
             </Expression>
             <Expression xsi:type="Equal">
-              <Operand xsi:type="WorkflowProperty" TypeArguments="q1:ButtonState">
+              <Operand xsi:type="WorkflowProperty" TypeArguments="p1:ButtonState">
                 <Value>Released</Value>
               </Operand>
             </Expression>
@@ -247,7 +248,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Merge" />
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>Scale</Name>
         <Workflow>
           <Nodes>
@@ -285,8 +286,8 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateVector3">
-          <gl:X>2.97187519</gl:X>
-          <gl:Y>1.6375</gl:Y>
+          <gl:X>2.83125019</gl:X>
+          <gl:Y>2.99166679</gl:Y>
           <gl:Z>5</gl:Z>
         </Combinator>
       </Expression>
@@ -305,8 +306,8 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateLookAt">
           <gl:Eye>
-            <gl:X>2.97187519</gl:X>
-            <gl:Y>1.6375</gl:Y>
+            <gl:X>2.83125019</gl:X>
+            <gl:Y>2.99166679</gl:Y>
             <gl:Z>5</gl:Z>
           </gl:Eye>
           <gl:Target>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -21,6 +21,7 @@
           <gl:WindowState>Normal</gl:WindowState>
           <gl:DisplayDevice>Primary</gl:DisplayDevice>
           <gl:TargetRenderFrequency>0</gl:TargetRenderFrequency>
+          <gl:TargetUpdateFrequency xsi:nil="true" />
           <gl:RenderState>
             <gl:StateConfiguration xsi:type="gl:EnableState">
               <gl:Capability>Blend</gl:Capability>
@@ -86,10 +87,10 @@
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:UpdateFrame" />
+        <Combinator xsi:type="gl:RenderFrame" />
       </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import clr
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>import clr
 clr.AddReference("OpenTK")
 from OpenTK import Vector2, Vector3
 from System import Array, Single, Random
@@ -166,7 +167,7 @@ def process(value):
       p.activate(source,Vector2(vx,vy),mass,size)
       spawncount -= 1
 
-  return Array[Vector3]([Vector3(p.pos.X,p.pos.Y,p.size) for p in particles if p.active])</scr:Script>
+  return Array[Vector3]([Vector3(p.pos.X,p.pos.Y,p.size) for p in particles if p.active])</ipy:Script>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:DrawArrays">

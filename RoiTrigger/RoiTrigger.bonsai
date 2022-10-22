@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -42,6 +42,8 @@
           <al:Sources>
             <al:SourceConfiguration>
               <al:Name>Source</al:Name>
+              <al:Gain>1</al:Gain>
+              <al:Pitch>1</al:Pitch>
               <al:Direction>
                 <al:X>0</al:X>
                 <al:Y>0</al:Y>
@@ -95,7 +97,7 @@
           <cv:SubtractionMethod>Absolute</cv:SubtractionMethod>
         </Combinator>
       </Expression>
-      <Expression xsi:type="NestedWorkflow">
+      <Expression xsi:type="rx:Defer">
         <Name>NormalizedSum</Name>
         <Description>Computes the proportion of pixels in the area that are above the threshold.</Description>
         <Workflow>
@@ -145,7 +147,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:DistinctUntilChanged" />
       </Expression>
-      <Expression xsi:type="Condition">
+      <Expression xsi:type="rx:Condition">
         <Name>RisingEdge</Name>
         <Workflow>
           <Nodes>
@@ -159,7 +161,7 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>PlaySound</Name>
         <Description />
         <Workflow>
@@ -201,6 +203,7 @@
               <Combinator xsi:type="al:AudioPlayback">
                 <al:SourceName>Source</al:SourceName>
                 <al:SampleRate>44100</al:SampleRate>
+                <al:State>Playing</al:State>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">

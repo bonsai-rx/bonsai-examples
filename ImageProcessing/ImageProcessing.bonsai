@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.4.0"
+<WorkflowBuilder Version="2.7.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -12,7 +12,7 @@
           <cv:Mode>Unchanged</cv:Mode>
         </Combinator>
       </Expression>
-      <Expression xsi:type="Replay">
+      <Expression xsi:type="rx:Replay">
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -34,7 +34,7 @@
             <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
-        <BufferSize xsi:nil="true" />
+        <rx:BufferSize xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Smooth">

@@ -1,26 +1,30 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bonsai.Examples.RoiTrigger</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Bonsai - ROI Trigger Example</title>
     <authors>glopes</authors>
     <owners>glopes</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://bonsai-rx.org/license</licenseUrl>
     <projectUrl>https://github.com/bonsai-rx/bonsai-examples</projectUrl>
     <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An example of triggering a sound effect on motion detected within a certain region of a video stream.</description>
-    <copyright>Gonçalo Lopes © 2019</copyright>
+    <copyright>Gonçalo Lopes © 2022</copyright>
     <tags>ROI Trigger Vision Example Bonsai Gallery</tags>
+    <packageTypes>
+      <packageType name="BonsaiGallery" />
+    </packageTypes>
     <dependencies>
-      <dependency id="Bonsai.Core" version="2.4.0" />
-      <dependency id="Bonsai.Vision" version="2.4.0" />
-      <dependency id="Bonsai.Dsp" version="2.4.0" />
-      <dependency id="Bonsai.Audio" version="2.4.0" />
-      <dependency id="Bonsai.Vision.Design" version="2.4.0" />
-      <dependency id="Bonsai.Design.Visualizers" version="2.4.0" />
-      <dependency id="Bonsai.System" version="2.4.0" />
+      <dependency id="Bonsai.Core" version="2.7.0" />
+      <dependency id="Bonsai.Vision" version="2.7.0" />
+      <dependency id="Bonsai.Dsp" version="2.7.0" />
+      <dependency id="Bonsai.Audio" version="2.7.0" />
+      <dependency id="Bonsai.Vision.Design" version="2.7.0" />
+      <dependency id="Bonsai.Design.Visualizers" version="2.7.0" />
+      <dependency id="Bonsai.System" version="2.7.0" />
+      <dependency id="Bonsai.Dsp.Design" version="2.7.0" />
     </dependencies>
   </metadata>
 </package>
