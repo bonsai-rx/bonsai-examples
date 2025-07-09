@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.7.0"
+<WorkflowBuilder Version="2.9.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
@@ -197,8 +197,8 @@
       <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="12" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
+      <Edge From="9" To="12" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source2" />
       <Edge From="12" To="13" Label="Source1" />
